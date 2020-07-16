@@ -1,0 +1,110 @@
+@startuml
+
+abstract class Circuit {
+# nom : String
+# id : int
++ {abstract} processa() : void
+}
+
+class Component {
++ processa() : void
+}
+
+class And {
++ processa() : void
+}
+
+class Or {
++ processa() : void
+}
+
+class Not {
++ processa() : void
+}
+
+Circuit <|-down- And
+Circuit <|-down- Or
+Circuit <|-down- Not
+Circuit <|-down- Component
+
+' put Component to the right of And, Or, Not
+Or -right[hidden]-> Component
+Not -right[hidden]-> Component
+And -right[hidden]-> Component
+
+Component "1" -left-> "1..*" Circuit : circuits
+
+note right of Component
+	public void processa() {
+		for (Circuit circ : circuits) {
+			circ.processa();
+		}
+	}
+end note
+
+class Pota {
+- estat : boolean
+- nom : String
+- id : int
++ update() : void
+}
+
+Circuit *-left> "1..*" Pota : entrades
+Circuit *-> "1..*" Pota : sortides
+
+class Conexio {
++ Conexio(Pota, Pota)
+}
+
+class Xor {
++ processa() : void
+}
+
+class Sumador1Bit {
++ processa() : void
+}
+
+class SumadorNBits {
++ SumadorNBits(int n)
++ processa() : void
+}
+
+Component <|-down- Xor
+Component <|-down- Sumador1Bit
+Component <|-down- SumadorNBits
+
+class Client {
++ {static} main()
+}
+
+Client -[hidden]up-> Xor
+
+class Utilitats {
++ static boolean[] int2Binary()
++ static int binary2Int()
+}
+
+Xor -[hidden]right-> Sumador1Bit
+Sumador1Bit -[hidden]right-> SumadorNBits
+Utilitats -[hidden]up-> Sumador1Bit
+
+class GeneradorId {
+- {static} id : int
++ {static} getId() : int
+}
+
+
+GeneradorId -[hidden]left-> Utilitats
+
+note right of GeneradorId
+public class GeneradorId {
+	private static int id = 0;
+
+	public static int getId() {
+		id++;
+		return id;
+	}
+}
+end note
+
+@enduml
