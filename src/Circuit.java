@@ -9,7 +9,6 @@ public abstract class Circuit {
 
 	public Circuit(String nom) {
 		this.nom = nom;
-		id = GeneradorId.getId();
 	}
 
 	public String getNom() {

@@ -12,7 +12,6 @@ public class Pota extends Observable implements Observer {
 
     public Pota(String nom) {
         this.nom = nom;
-        this.id = GeneradorId.getId();
         clearChanged(); // de Observable : neteja aquest flag
     }
 
