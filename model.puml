@@ -88,23 +88,5 @@ Xor -[hidden]right-> Sumador1Bit
 Sumador1Bit -[hidden]right-> SumadorNBits
 Utilitats -[hidden]up-> Sumador1Bit
 
-class GeneradorId {
-- {static} id : int
-+ {static} getId() : int
-}
-
-
-GeneradorId -[hidden]left-> Utilitats
-
-note right of GeneradorId
-public class GeneradorId {
-	private static int id = 0;
-
-	public static int getId() {
-		id++;
-		return id;
-	}
-}
-end note
 
 @enduml
