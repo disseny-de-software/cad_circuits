@@ -3,26 +3,26 @@ public class Or extends Circuit {
 	// Constructor per defecte : dues entrades i una sortida
 	public Or() {
 		super("or");
-		addEntrada(new Pota("entrada 1"));
-		addEntrada(new Pota("entrada 2"));
-		addSortida(new Pota("sortida"));
+		addInput(new Pin("input 1"));
+		addInput(new Pin("input 2"));
+		addOutput(new Pin("output"));
 	}
 
 	// Constructor amb nombre d'entrades >= 1
-	public Or(int nEntrades) {
+	public Or(int numInputs) {
 		super("and");
-		for (int i = 1; i <= nEntrades; i++) {
-			addEntrada(new Pota("entrada " + i));
+		for (int i = 1; i <= numInputs; i++) {
+			addInput(new Pin("input " + i));
 		}
-		addSortida(new Pota("sortida"));
+		addOutput(new Pin("output"));
 	}
 
-	public void processa() {
-		boolean resultat = false ;
-		for (Pota potaEntrada : entrades) {
-			resultat = resultat || potaEntrada.isEstat();
+	public void process() {
+		boolean result = false ;
+		for (Pin pinEntrada : inputs) {
+			result = result || pinEntrada.isState();
 		}
-		setEstatSortida(resultat);
+		setStateOutput(result);
 	}
 
 }

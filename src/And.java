@@ -2,27 +2,27 @@ public class And extends Circuit {
 	// Constructor per defecte : dues entrades i una sortida
 	public And() {
 		super("and");
-		addEntrada(new Pota("entrada 1"));
-		addEntrada(new Pota("entrada 2"));
-		addSortida(new Pota("sortida"));
+		addInput(new Pin("input 1"));
+		addInput(new Pin("input 2"));
+		addOutput(new Pin("output"));
 	}
 
-	// Constructor amb nombre d'entrades >= 1
-	public And(int nEntrades) {
+	// Constructor with >= 1 inputs
+	public And(int numInputs) {
 		super("and");
-		for (int i = 1; i <= nEntrades; i++) {
-			addEntrada(new Pota("entrada " + i));
+		for (int i = 1; i <= numInputs; i++) {
+			addInput(new Pin("input " + i));
 		}
-		addSortida(new Pota("sortida"));
+		addOutput(new Pin("output"));
 	}
 
 
-	public void processa() {
-		boolean resultat = true ;
-		for (Pota potaEntrada : entrades) {
-			resultat = resultat && potaEntrada.isEstat();
+	public void process() {
+		boolean result = true ;
+		for (Pin pinInput : inputs) {
+			result = result && pinInput.isState();
 		}
-		setEstatSortida(resultat);
+		setStateOutput(result);
 	}
 
 }

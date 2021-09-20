@@ -3,13 +3,13 @@ import java.util.Collection;
 
 // Classe grup del composite
 public class Component extends Circuit {
-	public Component(String nom, int nEntrades, int nSortides) {
-		super(nom);
-		for (int i = 1; i <= nEntrades; i++) {
-			addEntrada(new Pota("entrada " + i));
+	public Component(String name, int numInputs, int numOutputs) {
+		super(name);
+		for (int i = 1; i <= numInputs; i++) {
+			addInput(new Pin("input " + i));
 		}
-		for (int i = 1; i <= nSortides; i++) {
-			addSortida(new Pota("sortida " + i));
+		for (int i = 1; i <= numOutputs; i++) {
+			addOutput(new Pin("output " + i));
 		}
 	}
 
@@ -17,18 +17,6 @@ public class Component extends Circuit {
 
 	public Collection<Circuit> getCircuits() {
 		return circuits;
-	}
-
-	public int portesSize() {
-		return circuits.size();
-	}
-
-	public Circuit[] portesToArray() {
-		return (Circuit[]) circuits.toArray(new Circuit[circuits.size()]);
-	}
-
-	public Circuit[] portesToArray(Circuit[] portes) {
-		return (Circuit[]) this.circuits.toArray(portes);
 	}
 
 	public void addCircuit(Circuit circ) {
@@ -42,9 +30,9 @@ public class Component extends Circuit {
 	// futur, per tenir una aplicacio mes usable. Potser engegant un algoritme
 	// d'ordenacio topologica de grafs, que reordeni els subcircuits d'un circuit
 	// cada vegada que se'n insereix un ?
-	public void processa() {
+	public void process() {
 		for (Circuit circ : circuits) {
-			circ.processa();
+			circ.process();
 		}
 	}
 }

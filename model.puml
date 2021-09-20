@@ -1,25 +1,25 @@
 @startuml
 
 abstract class Circuit {
-# nom : String
+# name : String
 # id : int
-+ {abstract} processa() : void
++ {abstract} process()
 }
 
 class Component {
-+ processa() : void
++ process()
 }
 
 class And {
-+ processa() : void
++ process()
 }
 
 class Or {
-+ processa() : void
++ process()
 }
 
 class Not {
-+ processa() : void
++ process()
 }
 
 Circuit <|-down- And
@@ -35,43 +35,43 @@ And -right[hidden]-> Component
 Component "1" -left-> "1..*" Circuit : circuits
 
 note right of Component
-	public void processa() {
+	public void process() {
 		for (Circuit circ : circuits) {
-			circ.processa();
+			circ.process();
 		}
 	}
 end note
 
-class Pota {
-- estat : boolean
-- nom : String
+class Pin {
+- state : boolean
+- name : String
 - id : int
-+ update() : void
++ update()
 }
 
-Circuit *-left> "1..*" Pota : entrades
-Circuit *-> "1..*" Pota : sortides
+Circuit *-left> "1..*" Pin : inputs
+Circuit *-> "1..*" Pin : outputs
 
-class Conexio {
-+ Conexio(Pota, Pota)
+class Connection {
++ Connection(Pin, Pin)
 }
 
 class Xor {
-+ processa() : void
++ process()
 }
 
-class Sumador1Bit {
-+ processa() : void
+class Adder1Bit {
++ process()
 }
 
-class SumadorNBits {
-+ SumadorNBits(int n)
-+ processa() : void
+class AdderNBits {
++ AdderNBits(int n)
++ process()
 }
 
 Component <|-down- Xor
-Component <|-down- Sumador1Bit
-Component <|-down- SumadorNBits
+Component <|-down- Adder1Bit
+Component <|-down- AdderNBits
 
 class Client {
 + {static} main()
@@ -79,14 +79,14 @@ class Client {
 
 Client -[hidden]up-> Xor
 
-class Utilitats {
+class Utis {
 + static boolean[] int2Binary()
 + static int binary2Int()
 }
 
-Xor -[hidden]right-> Sumador1Bit
-Sumador1Bit -[hidden]right-> SumadorNBits
-Utilitats -[hidden]up-> Sumador1Bit
+Xor -[hidden]right-> Adder1Bit
+Adder1Bit -[hidden]right-> AdderNBits
+Utis -[hidden]up-> Adder1Bit
 
 
 @enduml

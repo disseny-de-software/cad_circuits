@@ -1,48 +1,48 @@
 public class Client {
 	public static void main(String[] args) {
-		boolean[][] taula = new boolean[4][2] ; 
-		taula[0][0] = false ; taula[0][1] = false ; 
-		taula[1][0] = false ; taula[1][1] = true ; 
-		taula[2][0] = true  ; taula[2][1] = false ; 
-		taula[3][0] = true  ; taula[3][1] = true ; 
+		boolean[][] table = new boolean[4][2] ;
+		table[0][0] = false ; table[0][1] = false ;
+		table[1][0] = false ; table[1][1] = true ;
+		table[2][0] = true  ; table[2][1] = false ;
+		table[3][0] = true  ; table[3][1] = true ;
 
-		System.out.println("Prova de portes simples amb el minim d'entrades : es generen be ? calculen be ?");
+		System.out.println("Test of simple gates with minimum inputs : do I create them well ? do they work ?");
 		And and = new And();
 		Or   or = new  Or();
 		Not not = new Not();
-		System.out.println("nom : " + and.getNom() + " id : " + and.getId());
-		System.out.println("nom : " +  or.getNom() + " id : " +  or.getId());
-		System.out.println("nom : " + not.getNom() + " id : " + not.getId());
+		System.out.println("name : " + and.getName() + " id : " + and.getId());
+		System.out.println("name : " +  or.getName() + " id : " +  or.getId());
+		System.out.println("name : " + not.getName() + " id : " + not.getId());
 		for(int i=0; i<4; i++) {
-			and.entradesToArray()[0].setEstat(taula[i][0]);
-			and.entradesToArray()[1].setEstat(taula[i][1]);
-			and.processa();
-			System.out.println("and(" + taula[i][0] +"," + taula[i][1] + ") = " + and.isEstatSortida());
+			and.inputsToArray()[0].setState(table[i][0]);
+			and.inputsToArray()[1].setState(table[i][1]);
+			and.process();
+			System.out.println("and(" + table[i][0] +"," + table[i][1] + ") = " + and.isStateOutput());
 		}
     	for(int i=0; i<4; i++) {
-			or.entradesToArray()[0].setEstat(taula[i][0]);
-			or.entradesToArray()[1].setEstat(taula[i][1]);
-			or.processa();
-			System.out.println("or(" + taula[i][0] +"," + taula[i][1] + ") = " + or.isEstatSortida());
+			or.inputsToArray()[0].setState(table[i][0]);
+			or.inputsToArray()[1].setState(table[i][1]);
+			or.process();
+			System.out.println("or(" + table[i][0] +"," + table[i][1] + ") = " + or.isStateOutput());
 		}
-		not.setEstatEntrada(true);
-		not.processa();
-		System.out.println("not(" + true + ") = " + not.isEstatSortida());
-		not.setEstatEntrada(false);
-		not.processa();
-		System.out.println("not(" + false + ") = " + not.isEstatSortida());
+		not.setStateInput(true);
+		not.process();
+		System.out.println("not(" + true + ") = " + not.isStateOutput());
+		not.setStateInput(false);
+		not.process();
+		System.out.println("not(" + false + ") = " + not.isStateOutput());
 
-		System.out.println("\nProva de simulacio d'un circuit Xor com a classe");
+		System.out.println("\nTest simulation of an Xor as object of a class Xor");
 		Xor xor1 = new Xor();
-		System.out.println("nom : " + xor1.getNom() + " id : " + xor1.getId());
+		System.out.println("name : " + xor1.getName() + " id : " + xor1.getId());
 		for(int i=0; i<4; i++) {
-			xor1.entradesToArray()[0].setEstat(taula[i][0]);
-			xor1.entradesToArray()[1].setEstat(taula[i][1]);
-			xor1.processa();
-			System.out.println("xor(" + taula[i][0] +"," + taula[i][1] + ") = " + xor1.isEstatSortida());
+			xor1.inputsToArray()[0].setState(table[i][0]);
+			xor1.inputsToArray()[1].setState(table[i][1]);
+			xor1.process();
+			System.out.println("xor(" + table[i][0] +"," + table[i][1] + ") = " + xor1.isStateOutput());
 		}
 
-		System.out.println("\nProva de simulacio d'un circuit Xor construida a la interficie d'usuari");
+		System.out.println("\nTest of an Xor build from gates as in the user interface");
 		Component xor2 = new Component("xor",2, 1); // dues entrades i una sortida
 		Or  orXor2   = new Or();  // per defecte : dues entrades i una sortida
 		And and1Xor2 = new And(); // idem
@@ -56,40 +56,40 @@ public class Client {
 		xor2.addCircuit(and2Xor2);
 		// d'entrada a sortida ("esquerra a dreta") :
 		// Conexio(observat, observador) = (origen, desti)
-		new Conexio(xor2.entradesToArray()[0], and1Xor2.entradesToArray()[0]);
-		new Conexio(xor2.entradesToArray()[0],   orXor2.entradesToArray()[0]);
-		new Conexio(xor2.entradesToArray()[1], and1Xor2.entradesToArray()[1]);
-		new Conexio(xor2.entradesToArray()[1],   orXor2.entradesToArray()[1]);
-		new Conexio(orXor2.sortidesToArray()[0]  , and2Xor2.entradesToArray()[0]);
-		new Conexio(and1Xor2.sortidesToArray()[0],  notXor2.entradesToArray()[0]);
-		new Conexio(notXor2.sortidesToArray()[0],  and2Xor2.entradesToArray()[1]);
-		new Conexio(and2Xor2.sortidesToArray()[0], xor2.sortidesToArray()[0]);
-		System.out.println("nom : " + xor2.getNom() + " id : " + xor2.getId());
+		new Connection(xor2.inputsToArray()[0], and1Xor2.inputsToArray()[0]);
+		new Connection(xor2.inputsToArray()[0],   orXor2.inputsToArray()[0]);
+		new Connection(xor2.inputsToArray()[1], and1Xor2.inputsToArray()[1]);
+		new Connection(xor2.inputsToArray()[1],   orXor2.inputsToArray()[1]);
+		new Connection(orXor2.outputsToArray()[0]  , and2Xor2.inputsToArray()[0]);
+		new Connection(and1Xor2.outputsToArray()[0],  notXor2.inputsToArray()[0]);
+		new Connection(notXor2.outputsToArray()[0],  and2Xor2.inputsToArray()[1]);
+		new Connection(and2Xor2.outputsToArray()[0], xor2.outputsToArray()[0]);
+		System.out.println("nom : " + xor2.getName() + " id : " + xor2.getId());
 		for(int i=0; i<4; i++) {
-			xor2.entradesToArray()[0].setEstat(taula[i][0]);
-			xor2.entradesToArray()[1].setEstat(taula[i][1]);
-			xor2.processa();
-			System.out.println("xor(" + taula[i][0] +"," + taula[i][1] + ") = " + xor2.isEstatSortida());
+			xor2.inputsToArray()[0].setState(table[i][0]);
+			xor2.inputsToArray()[1].setState(table[i][1]);
+			xor2.process();
+			System.out.println("xor(" + table[i][0] +"," + table[i][1] + ") = " + xor2.isStateOutput());
 		}
 
-		System.out.println("\nProva de simulacio d'un sumador d'1 bit amb 3 entrades");
-		Sumador1bit s1 = new Sumador1bit();
+		System.out.println("\nTest simulation of an adder of 1 bit with 3 inputs");
+		Adder1Bit s1 = new Adder1Bit();
 		for(int i=0; i<2; i++) {
 			for(int j=0; j<2; j++) {
 				for(int k=0; k<2; k++) {
-					s1.getPotaEntrada(1).setEstat((i==1));
-					s1.getPotaEntrada(2).setEstat((j==1));
-					s1.getPotaEntrada(3).setEstat((k==1));
-					s1.processa();
-					boolean suma = s1.isEstatSortida(1);
-					boolean carry = s1.isEstatSortida(2);
+					s1.getPinInput(1).setState((i==1));
+					s1.getPinInput(2).setState((j==1));
+					s1.getPinInput(3).setState((k==1));
+					s1.process();
+					boolean suma = s1.isStateOutput(1);
+					boolean carry = s1.isStateOutput(2);
 					System.out.println(i + "+" + j + "+" + k + " =  " + (carry?1:0) + (suma?1:0) );
 				}
 			}
 		}
 
-		System.out.println("\nProva del sumador de n bits");
-		SumadorNbits s2 = new SumadorNbits(2);
+		System.out.println("\nTest of an adder of n bits");
+		AdderNBits s2 = new AdderNBits(2);
 		for(int i=0; i<4; i++) {
 			for (int j = 0; j < 4; j++) {
 				System.out.println(i + " + " + j + " = " + s2.sumaDecimal(i, j));

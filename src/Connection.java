@@ -1,7 +1,7 @@
-public class Conexio {
+public class Connection {
 	// El constructor unicament fa que la pota desti observi
 	// a la origen, pero no mante cap enlla� a aquestes dues
-	public Conexio(Pota potaOrigen, Pota potaDesti) {
-		potaOrigen.addObserver(potaDesti);
+	public Connection(Pin pinOrigin, Pin pinDestination) {
+		pinOrigin.addObserver(pinDestination);
 	}
 }

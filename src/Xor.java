@@ -13,13 +13,13 @@ public class Xor extends Component {
 		addCircuit(and2);
 		// d'entrada a sortida ("esquerra a dreta") :
 		// Conexio(observat, observador) = (origen, desti)
-		new Conexio(entradesToArray()[0], and1.entradesToArray()[0]);
-		new Conexio(entradesToArray()[0],   or.entradesToArray()[0]);
-		new Conexio(entradesToArray()[1], and1.entradesToArray()[1]);
-		new Conexio(entradesToArray()[1],   or.entradesToArray()[1]);
-		new Conexio(or.sortidesToArray()[0]  , and2.entradesToArray()[0]);
-		new Conexio(and1.sortidesToArray()[0],  not.entradesToArray()[0]);
-		new Conexio(not.sortidesToArray()[0],  and2.entradesToArray()[1]);
-		new Conexio(and2.sortidesToArray()[0], sortidesToArray()[0]);
+		new Connection(inputsToArray()[0], and1.inputsToArray()[0]);
+		new Connection(inputsToArray()[0],   or.inputsToArray()[0]);
+		new Connection(inputsToArray()[1], and1.inputsToArray()[1]);
+		new Connection(inputsToArray()[1],   or.inputsToArray()[1]);
+		new Connection(or.outputsToArray()[0]  , and2.inputsToArray()[0]);
+		new Connection(and1.outputsToArray()[0],  not.inputsToArray()[0]);
+		new Connection(not.outputsToArray()[0],  and2.inputsToArray()[1]);
+		new Connection(and2.outputsToArray()[0], outputsToArray()[0]);
 	}
 }
