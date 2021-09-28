@@ -1,5 +1,8 @@
 @startuml
 
+skinparam classAttributeIconSize 0
+'skinparam linetype polyline
+
 abstract class Circuit {
 # name : String
 # id : int
