@@ -1,3 +1,5 @@
+package simple;
+
 public class Or extends Circuit {
 
 	// Constructor per defecte : dues entrades i una sortida

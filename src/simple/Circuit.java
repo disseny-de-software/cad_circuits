@@ -1,11 +1,12 @@
+package simple;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 // Clase abstracta del composite que te com a grup a Component i com a classes
 // primitives a And, Or, Not
 public abstract class Circuit {
-    private String name;
-    private int id;
+	protected final String name;
 
 	public Circuit(String name) {
 		this.name = name;
@@ -15,27 +16,25 @@ public abstract class Circuit {
 		return name;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	protected Collection<Pin> inputs = new ArrayList<Pin>();
 
-	public Pin[] inputsToArray() {
-		return (Pin[]) inputs.toArray(new Pin[inputs.size()]);
+	private Pin[] inputsToArray() {
+		return inputs.toArray(new Pin[inputs.size()]);
 	}
 
-	public boolean addInput(Pin pin) {
+	private Pin[] outputsToArray() { return outputs.toArray(new Pin[outputs.size()]); }
+
+	public void setInput(int numInput, boolean state) {
+		getPinInput(numInput).setState(state);
+	}
+
+	protected boolean addInput(Pin pin) {
 		return inputs.add(pin);
 	}
 
 	protected Collection<Pin> outputs = new ArrayList<Pin>();
 
-	public Pin[] outputsToArray() {
-		return (Pin[]) outputs.toArray(new Pin[outputs.size()]);
-	}
-
-	public boolean addOutput(Pin pin) {
+	protected boolean addOutput(Pin pin) {
 		return outputs.add(pin);
 	}
 
@@ -44,8 +43,8 @@ public abstract class Circuit {
 	// per que tenen una unica pota de sortida. Pero per altres portes (Circuit
 	// i derivades) que en poden tenir mes d'una, treballa amb la primera
 	// d'elles.
-	protected void setStateOutput(boolean state) {
-		this.outputsToArray()[0].setState(state);
+	public void setStateOutput(boolean state) {
+		this.getPinOutput(0).setState(state);
 	}
 
 	public boolean isStateOutput() {
@@ -54,20 +53,19 @@ public abstract class Circuit {
 
 	// numPin va de 1...nombre de potes, no comensa per zero com els arrays.
 	public boolean isStateOutput(int numPin) {
-		return outputsToArray()[numPin-1].isState();
+		return outputsToArray()[numPin].isState();
 	}
-	
+
 	public abstract void process();
 
-	public Pin getPinInput(int numPin) {
-		return inputsToArray()[numPin-1];
-	}
+	public Pin getPinInput(int numPin) { return inputsToArray()[numPin]; }
 
 	public Pin getPinOutput(int numPin) {
-		return outputsToArray()[numPin-1];
+		return outputsToArray()[numPin];
 	}
 
 	public void setStateInput(int numPin, boolean state) {
 		getPinInput(numPin).setState(state);
 	}
+
 }

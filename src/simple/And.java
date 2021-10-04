@@ -1,3 +1,5 @@
+package simple;
+
 public class And extends Circuit {
 	// Constructor per defecte : dues entrades i una sortida
 	public And() {
@@ -16,7 +18,6 @@ public class And extends Circuit {
 		addOutput(new Pin("output"));
 	}
 
-
 	public void process() {
 		boolean result = true ;
 		for (Pin pinInput : inputs) {
@@ -24,5 +25,4 @@ public class And extends Circuit {
 		}
 		setStateOutput(result);
 	}
-
 }

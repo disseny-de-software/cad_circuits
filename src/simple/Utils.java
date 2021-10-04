@@ -1,3 +1,5 @@
+package simple;
+
 // Aquesta classe conte funcions estatiques d'utilitat, que no
 // conve incoure en cap altra classe per la seva generalitat.
 // Son estatiques per poder-les invocar sense necessitat de crear

@@ -1,3 +1,5 @@
+package clone;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,10 +17,6 @@ public class Component extends Circuit {
 
 	private Collection<Circuit> circuits = new ArrayList<Circuit>();
 
-	public Collection<Circuit> getCircuits() {
-		return circuits;
-	}
-
 	public void addCircuit(Circuit circ) {
 		circuits.add(circ);
 	}
@@ -34,5 +32,41 @@ public class Component extends Circuit {
 		for (Circuit circ : circuits) {
 			circ.process();
 		}
+	}
+
+	@Override
+	public Component clone() {
+		Component cloned = new Component(this.name, this.inputs.size(), this.outputs.size());
+		for (Circuit circuit : circuits) {
+			cloned.addCircuit(circuit.clone());
+		}
+        for (Connection connection : connections) {
+			connection.clone(cloned);
+		}
+		return cloned;
+	}
+
+	// en clonar un circuit tambe hem de clonar les seves conexions
+	private Collection<Connection> connections = new ArrayList<Connection>();
+	public void addConnection(Connection c) {
+		connections.add(c);
+	}
+
+	public Pin getPin(int numCircuit, String inputOrOutput, int numPin) {
+		Circuit circuit;
+		Pin result = null;
+		if (numCircuit==-1) {
+			circuit = this;
+		} else {
+			circuit = (Circuit) circuits.toArray()[numCircuit];
+		}
+		if (inputOrOutput.equals("input")) {
+			result = circuit.getPinInput(numPin);
+		} else if (inputOrOutput.equals("output")) {
+			result = circuit.getPinOutput(numPin);
+		} else {
+			assert false;
+		}
+		return result;
 	}
 }

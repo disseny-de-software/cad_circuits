@@ -1,0 +1,95 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+'skinparam linetype polyline
+
+abstract class Circuit {
+# name : String
+# id : int
++ {abstract} process()
+}
+
+class Component {
++ process()
+}
+
+class And {
++ process()
+}
+
+class Or {
++ process()
+}
+
+class Not {
++ process()
+}
+
+Circuit <|-down- And
+Circuit <|-down- Or
+Circuit <|-down- Not
+Circuit <|-down- Component
+
+' put Component to the right of And, Or, Not
+Or -right[hidden]-> Component
+Not -right[hidden]-> Component
+And -right[hidden]-> Component
+
+Component "1" -left-> "1..*" Circuit : circuits
+
+note right of Component
+	public void process() {
+		for (Circuit circ : circuits) {
+			circ.process();
+		}
+	}
+end note
+
+class Pin {
+- state : boolean
+- name : String
+- id : int
++ update()
+}
+
+Circuit *-left> "1..*" Pin : inputs
+Circuit *-> "1..*" Pin : outputs
+
+class Connection {
++ Connection(Pin, Pin)
+}
+
+class Xor {
++ process()
+}
+
+class Adder1Bit {
++ process()
+}
+
+class AdderNBits {
++ AdderNBits(int n)
++ process()
+}
+
+Component <|-down- Xor
+Component <|-down- Adder1Bit
+Component <|-down- AdderNBits
+
+class Client {
++ {static} main()
+}
+
+Client -[hidden]up-> Xor
+
+class Utis {
++ static boolean[] int2Binary()
++ static int binary2Int()
+}
+
+Xor -[hidden]right-> Adder1Bit
+Adder1Bit -[hidden]right-> AdderNBits
+Utis -[hidden]up-> Adder1Bit
+
+
+@enduml

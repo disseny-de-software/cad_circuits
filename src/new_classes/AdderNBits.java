@@ -1,3 +1,10 @@
+package new_classes;
+
+import simple.Component;
+import simple.Connection;
+import simple.Pin;
+import simple.Utils;
+
 public class AdderNBits extends Component {
 	private int nombreBits;
 
@@ -17,30 +24,30 @@ public class AdderNBits extends Component {
 		for(int i=1; i<=nombreBits; i++) {
 			// 3 entrades i 2 sortides de cada modul sumador 1 bit
 			// l'index de l'array v[] va de 0...n-1
-			Adder1Bit S1 = (Adder1Bit)this.getCircuits().toArray()[i-1];
-			Pin bit1S1  = S1.getPinInput(1);
-			Pin bit2S1  = S1.getPinInput(2);
-			Pin sumaS1  = S1.getPotaSuma();
-			Pin carryS1 = S1.getPotaCarry();
+			Adder1Bit S1 = (Adder1Bit)getChildCircuit(i-1);
+			Pin bit1S1  = S1.getPinInput(0);
+			Pin bit2S1  = S1.getPinInput(1);
+			Pin sumaS1  = S1.getPinOutput(0);
+			Pin carryS1 = S1.getPinOutput(1);
 			// dues entrades del digit i-essim del sumador 8 bits
 			// i la sortida per aquest digit
-			Pin bit1SN = this.getPinInput(2*i-1);
-			Pin bit2SN = this.getPinInput(2*i);
-			Pin sumaSN = this.getPinOutput(i);
+			Pin bit1SN = this.getPinInput(2*(i-1));
+			Pin bit2SN = this.getPinInput(2*i-1);
+			Pin sumaSN = this.getPinOutput(i-1);
 			if (i==1) {
-				Pin bit3S1  = S1.getPinInput(3);
+				Pin bit3S1  = S1.getPinInput(2);
 				bit3S1.setState(false);
 			}
 			new Connection(bit1SN, bit1S1);
 			new Connection(bit2SN, bit2S1);
 			new Connection(sumaS1, sumaSN);
 			if (i<n) {
-				Adder1Bit S1Seguent = (Adder1Bit)this.getCircuits().toArray()[i];
-				Pin bit3S1Seguent = S1Seguent.getPinInput(3);
+				Adder1Bit S1Seguent = (Adder1Bit)getChildCircuit(i);
+				Pin bit3S1Seguent = S1Seguent.getPinInput(2);
 				new Connection(carryS1,bit3S1Seguent);
 			} else // i==n, darrer modul sumador 1 bit : el carry
 				   // es el bit mes significatiu de la suma
-				new Connection(carryS1,this.getPinOutput(n+1));
+				new Connection(carryS1,this.getPinOutput(n));
 			}
 		}
 
@@ -60,14 +67,14 @@ public class AdderNBits extends Component {
 		// convertits
 		for(int i=1; i<=nombreBits ; i++) {
 			// de menys a mes bit significatiu
-			this.setStateInput(2*i-1,valor1Binari[nombreBits-i]);
-			this.setStateInput(2*i,valor2Binari[nombreBits-i]);
+			this.setStateInput(2*(i-1),valor1Binari[nombreBits-i]);
+			this.setStateInput(2*i-1,valor2Binari[nombreBits-i]);
 		}
 		process();
 		boolean sumaBinaria[] = new boolean[nombreBits+1];
 		for(int i=0; i<=nombreBits ; i++) {
 			// el bit mes significatiu a l'esquerra (index = 0)
-			sumaBinaria[i] = this.isStateOutput(nombreBits+1-i);
+			sumaBinaria[i] = this.isStateOutput(nombreBits-i);
 		}
 		return Utils.binary2Int(sumaBinaria) ;
 	}
