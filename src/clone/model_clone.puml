@@ -37,59 +37,59 @@ And -right[hidden]-> Component
 
 Component "1" -left-> "1..*" Circuit : circuits
 
-note right of Component
-	public void process() {
-		for (Circuit circ : circuits) {
-			circ.process();
-		}
-	}
-end note
+'note bottom of Component
+'	public void process() {
+'		for (Circuit circ : circuits) {
+'			circ.process();
+'		}
+'	}
+'end note
 
-class Pin {
+package java.util {
+abstract class Observable {
++ addObserver(ob : Observer)
++ removeObserver(ob : Observer)
++ setChanged()
++ notifyObservers()
+}
+interface Observer {
+{abstract} update(arg0 : Observable, \n\t      arg1 : Object)
+}
+}
+
+Observable -[hidden]right- Observer
+
+class Pin extends Observable implements Observer {
 - state : boolean
 - name : String
 - id : int
-+ update()
++ update(arg0 : Observable, \n\t\t arg1 : Object)
 }
 
-Circuit *-left> "1..*" Pin : inputs
-Circuit *-> "1..*" Pin : outputs
+Circuit *-right-> "1..*" Pin : inputs
+Circuit *-right-> "1..*" Pin : outputs
 
 class Connection {
-+ Connection(Pin, Pin)
+- pinFrom : Pin
+- pinTo : Pin
++ Connection(pinFrom : Pin, pinTo : Pin)
 }
 
-class Xor {
-+ process()
-}
+Component *-down-> "*" Connection
+Connection *-up-> "2" Pin
 
-class Adder1Bit {
-+ process()
-}
 
-class AdderNBits {
-+ AdderNBits(int n)
-+ process()
-}
-
-Component <|-down- Xor
-Component <|-down- Adder1Bit
-Component <|-down- AdderNBits
 
 class Client {
 + {static} main()
 }
-
-Client -[hidden]up-> Xor
 
 class Utis {
 + static boolean[] int2Binary()
 + static int binary2Int()
 }
 
-Xor -[hidden]right-> Adder1Bit
-Adder1Bit -[hidden]right-> AdderNBits
-Utis -[hidden]up-> Adder1Bit
+
 
 
 @enduml

@@ -2,10 +2,10 @@ package clone;
 
 public class Not extends Circuit {
 	// Constructor per defecte i unic : una entrada i una sortida
-	public Not() {
-		super("not");
-		addInput(new Pin("input not"));
-		addOutput(new Pin("output not"));
+	public Not(String name) {
+		super(name);
+		addInput(new Pin("not input"));
+		addOutput(new Pin("not output"));
 	}
 
 	// Per fer mes llegible la funcio process(), donat que nomes hi ha una entrada sempre.
@@ -18,11 +18,11 @@ public class Not extends Circuit {
 	}
 
 	public void process() {
-		setStateOutput(!isStateInput());
+		setOutput(!isStateInput());
 	}
 
 	@Override
 	public Not clone() {
-		return new Not();
+		return new Not(name);
 	}
 }

@@ -2,20 +2,17 @@ package clone;
 
 public class And extends Circuit {
 	// Constructor per defecte : dues entrades i una sortida
-	public And() {
-		super("and");
-		addInput(new Pin("input 1"));
-		addInput(new Pin("input 2"));
-		addOutput(new Pin("output"));
+	public And(String name) {
+		this(name, 2);
 	}
 
 	// Constructor with >= 1 inputs
-	public And(int numInputs) {
-		super("and");
+	public And(String name, int numInputs) {
+		super(name);
 		for (int i = 1; i <= numInputs; i++) {
-			addInput(new Pin("input " + i));
+			addInput(new Pin(name + " input " + i));
 		}
-		addOutput(new Pin("output"));
+		addOutput(new Pin(name + " output"));
 	}
 
 
@@ -24,11 +21,11 @@ public class And extends Circuit {
 		for (Pin pinInput : inputs) {
 			result = result && pinInput.isState();
 		}
-		setStateOutput(result);
+		setOutput(result);
 	}
 
 	@Override
 	public And clone() {
-		return new And(this.inputs.size());
+		return new And(name, this.inputs.size());
 	}
 }

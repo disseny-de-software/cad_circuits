@@ -1,9 +1,5 @@
 package simple;
 
-import new_classes.Adder1Bit;
-import new_classes.AdderNBits;
-import new_classes.Xor;
-
 public class Client {
 	private static final boolean[][] table = {{false,false},{false,true},{true,false},{true,true}};
 

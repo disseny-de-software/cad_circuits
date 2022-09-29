@@ -1,60 +1,76 @@
 package clone;
-
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 // Clase abstracta del composite que te com a grup a Component i com a classes
 // primitives a And, Or, Not
 public abstract class Circuit implements Cloneable {
-	protected String name;
-	public Circuit(String name) {
-		this.name = name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getName() {
-		return name;
-	}
-	protected Collection<Pin> inputs = new ArrayList<Pin>();
-	private Pin[] inputsToArray() {
-		return inputs.toArray(new Pin[inputs.size()]);
-	}
+  protected String name;
 
-	private Pin[] outputsToArray() { return outputs.toArray(new Pin[outputs.size()]); }
+  public Circuit(String name) {
+    this.name = name;
+  }
 
-	public void setInput(int numInput, boolean state) {
-		getPinInput(numInput).setState(state);
-	}
-	protected boolean addInput(Pin pin) {
-		return inputs.add(pin);
-	}
-	protected Collection<Pin> outputs = new ArrayList<Pin>();
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	protected boolean addOutput(Pin pin) {
-		return outputs.add(pin);
-	}
-	// setStateOutput() i getStateOutput() : Per fer el codi de la funcio de processar
-	// mes llegible. Pel cas de les portes And, Or i Not, no hi ha ambiguetat
-	// per que tenen una unica pota de sortida. Pero per altres portes (Circuit
-	// i derivades) que en poden tenir mes d'una, treballa amb la primera
-	// d'elles.
-	public void setStateInput(int numPin, boolean state) {
-		getPinInput(numPin).setState(state);
-	}
-	protected void setStateOutput(boolean state) {
-		getPinOutput(0).setState(state);
-	}
-	public boolean isStateOutput() {
-		return getPinOutput(0).isState();
-	}
-	public boolean isStateOutput(int numPin) { return getPinOutput(numPin).isState(); }
-	public abstract void process();
-	public Pin getPinInput(int numPin) { return inputsToArray()[numPin]; }
-	public Pin getPinOutput(int numPin) {
-		return outputsToArray()[numPin];
-	}
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public abstract Circuit clone();
+  protected List<Pin> inputs = new ArrayList<Pin>();
+
+  protected void addInput(Pin pin) { inputs.add(pin); }
+
+  protected List<Pin> outputs = new ArrayList<Pin>();
+
+  protected void addOutput(Pin pin) {
+    outputs.add(pin);
+  }
+
+  public void setInput(int numInput, boolean state) {
+    getPinInput(numInput).setState(state);
+  }
+
+  public boolean isInput(int numPin) {
+    return getPinInput(numPin).isState();
+  }
+
+  public void setOutput(boolean state) {
+    setOutput(0, state);
+  }
+
+  public void setOutput(int numInput, boolean state) {
+    getPinOutput(numInput).setState(state);
+  }
+
+  public boolean isOutput() { // of first an only output pin
+    return isOutput(0);
+  }
+
+  public boolean isOutput(int numPin) {
+    return getPinOutput(numPin).isState();
+  }
+
+  public abstract void process();
+
+  public Pin getPinInput(int numPin) {
+    return inputs.get(numPin);
+  }
+
+  public Pin getPinOutput(int numPin) {
+    return outputs.get(numPin);
+  }
+
+  public int numPinsInput() {
+    return inputs.size();
+  }
+
+  public int numPinsOutput() {
+    return outputs.size();
+  }
+
+  @Override
+  public abstract Circuit clone();
 }

@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="clone Client" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="clone.Client" />
+    <module name="cad_circuits" />
+    <option name="VM_PARAMETERS" value="-ea" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
