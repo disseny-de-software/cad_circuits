@@ -5,7 +5,6 @@ skinparam classAttributeIconSize 0
 
 abstract class Circuit {
 # name : String
-# id : int
 + {abstract} process()
 }
 
@@ -46,15 +45,16 @@ Component "1" -left-> "1..*" Circuit : circuits
 'end note
 
 package java.util {
-abstract class Observable {
-+ addObserver(ob : Observer)
-+ removeObserver(ob : Observer)
-+ setChanged()
-+ notifyObservers()
-}
-interface Observer {
-{abstract} update(arg0 : Observable, \n\t      arg1 : Object)
-}
+  abstract class Observable {
+  + addObserver(ob : Observer)
+  + removeObserver(ob : Observer)
+  + setChanged()
+  + notifyObservers()
+  }
+
+  interface Observer {
+  {abstract} update(arg0 : Observable, \n\t      arg1 : Object)
+  }
 }
 
 Observable -[hidden]right- Observer
@@ -62,7 +62,6 @@ Observable -[hidden]right- Observer
 class Pin extends Observable implements Observer {
 - state : boolean
 - name : String
-- id : int
 + update(arg0 : Observable, \n\t\t arg1 : Object)
 }
 
@@ -77,12 +76,6 @@ class Connection {
 
 Component *-down-> "*" Connection
 Connection *-up-> "2" Pin
-
-
-
-class Client {
-+ {static} main()
-}
 
 class Utis {
 + static boolean[] int2Binary()

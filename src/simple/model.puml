@@ -5,7 +5,6 @@ skinparam classAttributeIconSize 0
 
 abstract class Circuit {
 # name : String
-# id : int
 + {abstract} process()
 }
 
@@ -45,51 +44,34 @@ note right of Component
 	}
 end note
 
-class Pin {
-- state : boolean
-- name : String
-- id : int
-+ update()
+package java.util {
+  abstract class Observable {
+  + addObserver(ob : Observer)
+  + removeObserver(ob : Observer)
+  + setChanged()
+  + notifyObservers()
+  }
+
+  interface Observer {
+  {abstract} update(arg0 : Observable, \n\t      arg1 : Object)
+  }
 }
 
-Circuit *-left> "1..*" Pin : inputs
-Circuit *-> "1..*" Pin : outputs
+Observable -[hidden]right- Observer
+
+class Pin extends Observable implements Observer {
+- state : boolean
+- name : String
++ update(arg0 : Observable, \n\t\t arg1 : Object)
+}
+
+Circuit *-right-> "1..*" Pin : inputs
+Circuit *-right-> "1..*" Pin : outputs
 
 class Connection {
 + Connection(Pin, Pin)
 }
 
-class Xor {
-+ process()
-}
-
-class Adder1Bit {
-+ process()
-}
-
-class AdderNBits {
-+ AdderNBits(int n)
-+ process()
-}
-
-Component <|-down- Xor
-Component <|-down- Adder1Bit
-Component <|-down- AdderNBits
-
-class Client {
-+ {static} main()
-}
-
-Client -[hidden]up-> Xor
-
-class Utis {
-+ static boolean[] int2Binary()
-+ static int binary2Int()
-}
-
-Xor -[hidden]right-> Adder1Bit
-Adder1Bit -[hidden]right-> AdderNBits
-Utis -[hidden]up-> Adder1Bit
-
+Pin -[hidden]right-> Connection
 
 @enduml
