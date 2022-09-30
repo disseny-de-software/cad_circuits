@@ -1,18 +1,12 @@
 package simple;
 
 public class Or extends Circuit {
+	public Or() { this("or"); }
 
-	// Constructor per defecte : dues entrades i una sortida
-	public Or() {
-		super("or");
-		addInput(new Pin("input 1"));
-		addInput(new Pin("input 2"));
-		addOutput(new Pin("output"));
-	}
+	public Or(String name) { this(name, 2); }
 
-	// Constructor amb nombre d'entrades >= 1
-	public Or(int numInputs) {
-		super("and");
+	public Or(String name, int numInputs) {
+		super(name);
 		for (int i = 1; i <= numInputs; i++) {
 			addInput(new Pin("input " + i));
 		}
@@ -24,7 +18,6 @@ public class Or extends Circuit {
 		for (Pin pinEntrada : inputs) {
 			result = result || pinEntrada.isState();
 		}
-		setStateOutput(result);
+		setOutput(result);
 	}
-
 }

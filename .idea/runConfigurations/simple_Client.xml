@@ -2,6 +2,7 @@
   <configuration default="false" name="simple Client" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="simple.Client" />
     <module name="cad_circuits" />
+    <option name="VM_PARAMETERS" value="-ea" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

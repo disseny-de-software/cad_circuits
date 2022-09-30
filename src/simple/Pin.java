@@ -5,7 +5,6 @@ import java.util.Observer;
 
 public class Pin extends Observable implements Observer {
     private String name;
-    private int id;
     private boolean state;
 
     public Pin(String name) {
@@ -14,7 +13,6 @@ public class Pin extends Observable implements Observer {
     }
 
     // A destination pin updates itself copying the state of the origin pin to which it is connected
-    // que esta conectada.
     public void update(Observable arg0, Object arg1) {
         setState(((Pin) arg0).isState());
     }

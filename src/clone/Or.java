@@ -1,15 +1,17 @@
 package clone;
 
 public class Or extends Circuit {
+	public Or() {
+		this("or");
+	}
 
-	// Constructor per defecte : dues entrades i una sortida
 	public Or(String name) {
 		this(name, 2);
 	}
 
-	// Constructor amb nombre d'entrades >= 1
 	public Or(String name, int numInputs) {
 		super(name);
+		assert numInputs >= 2 : "invalid number of inputs for an Or";
 		for (int i = 1; i <= numInputs; i++) {
 			addInput(new Pin("input " + i));
 		}

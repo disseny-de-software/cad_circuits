@@ -8,40 +8,41 @@ abstract class Circuit {
 + {abstract} process()
 }
 
-class Component {
+class Component extends Circuit {
++ Component(numInputs : int, \n\t\t\t numOutputs : int)
 + process()
 }
 
-class And {
+class And extends Circuit {
++ And()
++ And(numInputs : int)
 + process()
 }
 
-class Or {
+class Or extends Circuit {
++ Or()
++ Or(numInputs : int)
 + process()
 }
 
-class Not {
+class Not extends Circuit {
++ Not()
 + process()
 }
 
-Circuit <|-down- And
-Circuit <|-down- Or
-Circuit <|-down- Not
-Circuit <|-down- Component
+And -[hidden]right- Or
 
-' put Component to the right of And, Or, Not
-Or -right[hidden]-> Component
-Not -right[hidden]-> Component
-And -right[hidden]-> Component
+Component -left-> "\n1..*" Circuit : circuits
 
-Component "1" -left-> "1..*" Circuit : circuits
+Or -left[hidden]-> Component
+Not -left[hidden]-> Component
+And -left[hidden]-> Component
 
-note right of Component
-	public void process() {
-		for (Circuit circ : circuits) {
-			circ.process();
-		}
-	}
+
+note left of Component::process
+for (Circuit circ : circuits) {
+  circ.process();
+}
 end note
 
 package java.util {
@@ -65,12 +66,16 @@ class Pin extends Observable implements Observer {
 + update(arg0 : Observable, \n\t\t arg1 : Object)
 }
 
-Circuit *-right-> "1..*" Pin : inputs
-Circuit *-right-> "1..*" Pin : outputs
+Circuit *-right-> "1..*\n" Pin : inputs
+Circuit *-right-> "1..*\n" Pin : outputs
 
 class Connection {
-+ Connection(Pin, Pin)
++ Connection(pinFrom : Pin, \n\t\t\t pinTo : Pin)
 }
+
+note bottom of Connection
+pinFrom.addObserver(pinTo);
+end note
 
 Pin -[hidden]right-> Connection
 

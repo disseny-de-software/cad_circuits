@@ -1,12 +1,12 @@
 package simple;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-// Clase abstracta del composite que te com a grup a Component i com a classes
-// primitives a And, Or, Not
 public abstract class Circuit {
 	protected final String name;
+	protected List<Pin> inputs = new ArrayList<Pin>();
+	protected List<Pin> outputs = new ArrayList<Pin>();
 
 	public Circuit(String name) {
 		this.name = name;
@@ -16,56 +16,30 @@ public abstract class Circuit {
 		return name;
 	}
 
-	protected Collection<Pin> inputs = new ArrayList<Pin>();
-
-	private Pin[] inputsToArray() {
-		return inputs.toArray(new Pin[inputs.size()]);
+	protected void addInput(Pin pin) {
+		inputs.add(pin);
 	}
 
-	private Pin[] outputsToArray() { return outputs.toArray(new Pin[outputs.size()]); }
+	public Pin getPinInput(int numPin) { return inputs.get(numPin); }
 
-	public void setInput(int numInput, boolean state) {
-		getPinInput(numInput).setState(state);
+	public void setInput(int numPin, boolean state) {
+		getPinInput(numPin).setState(state);
 	}
 
-	protected boolean addInput(Pin pin) {
-		return inputs.add(pin);
+	protected void addOutput(Pin pin) {
+		outputs.add(pin);
 	}
 
-	protected Collection<Pin> outputs = new ArrayList<Pin>();
-
-	protected boolean addOutput(Pin pin) {
-		return outputs.add(pin);
-	}
-
-	// setStateOutput() i getStateOutput() : Per fer el codi de la funcio de processar
-	// mes llegible. Pel cas de les portes And, Or i Not, no hi ha ambiguetat
-	// per que tenen una unica pota de sortida. Pero per altres portes (Circuit
-	// i derivades) que en poden tenir mes d'una, treballa amb la primera
-	// d'elles.
-	public void setStateOutput(boolean state) {
+	public void setOutput(boolean state) {
 		this.getPinOutput(0).setState(state);
 	}
 
-	public boolean isStateOutput() {
-		return outputsToArray()[0].isState();
-	}
+	public boolean isOutput() { return isOutput(0); }
 
-	// numPin va de 1...nombre de potes, no comensa per zero com els arrays.
-	public boolean isStateOutput(int numPin) {
-		return outputsToArray()[numPin].isState();
-	}
+	public boolean isOutput(int numPin) { return outputs.get(numPin).isState(); }
+
+	public Pin getPinOutput(int numPin) { return outputs.get(numPin); }
 
 	public abstract void process();
-
-	public Pin getPinInput(int numPin) { return inputsToArray()[numPin]; }
-
-	public Pin getPinOutput(int numPin) {
-		return outputsToArray()[numPin];
-	}
-
-	public void setStateInput(int numPin, boolean state) {
-		getPinInput(numPin).setState(state);
-	}
 
 }

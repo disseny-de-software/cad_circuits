@@ -3,38 +3,49 @@
 skinparam classAttributeIconSize 0
 'skinparam linetype polyline
 
-abstract class Circuit {
+interface Cloneable {
++ {abstract} clone()
+}
+
+abstract class Circuit implements Cloneable {
 # name : String
 + {abstract} process()
 }
 
-class Component {
+class Component extends Circuit {
++ Component(numInputs : int, \n\t\t\t numOutputs : int)
 + process()
++ clone()
 }
 
-class And {
+class And extends Circuit {
++ And()
++ And(numInputs : int)
 + process()
++ clone()
 }
 
-class Or {
+class Or extends Circuit {
++ Or()
++ Or(numInputs : int)
 + process()
++ clone()
 }
 
-class Not {
+class Not extends Circuit {
++ Not()
 + process()
++ clone()
 }
 
-Circuit <|-down- And
-Circuit <|-down- Or
-Circuit <|-down- Not
-Circuit <|-down- Component
+And -[hidden]right- Or
 
 ' put Component to the right of And, Or, Not
 Or -right[hidden]-> Component
 Not -right[hidden]-> Component
 And -right[hidden]-> Component
 
-Component "1" -left-> "1..*" Circuit : circuits
+Component -left-> "\n1..*" Circuit : circuits
 
 'note bottom of Component
 '	public void process() {
@@ -65,8 +76,8 @@ class Pin extends Observable implements Observer {
 + update(arg0 : Observable, \n\t\t arg1 : Object)
 }
 
-Circuit *-right-> "1..*" Pin : inputs
-Circuit *-right-> "1..*" Pin : outputs
+Circuit *-right-> "1..*\n" Pin : inputs
+Circuit *-right-> "1..*\n" Pin : outputs
 
 class Connection {
 - pinFrom : Pin
@@ -74,13 +85,15 @@ class Connection {
 + Connection(pinFrom : Pin, pinTo : Pin)
 }
 
-Component *-down-> "*" Connection
+Component *-down-> "\t\t\t1..*" Connection : connections
 Connection *-up-> "2" Pin
 
-class Utis {
-+ static boolean[] int2Binary()
-+ static int binary2Int()
+class Utils {
++ {static} boolean[] int2Binary()
++ {static} int binary2Int()
 }
+
+Pin -[hidden]right- Utils
 
 
 

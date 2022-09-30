@@ -7,13 +7,17 @@ import java.util.List;
 // Classe grup del composite
 public class Component extends Circuit {
 	private List<Connection> connections = new ArrayList<>();
+	public List<Circuit> circuits = new ArrayList<Circuit>();
 
-	public void addConnection(Connection c) {
-		connections.add(c);
+	public Component(int numInputs, int numOutputs) {
+		this("component", numInputs, numOutputs);
 	}
 
 	public Component(String name, int numInputs, int numOutputs) {
 		super(name);
+		assert numInputs >= 1 : "invalid number of inputs for a Component";
+		assert numOutputs >= 1 : "invalid number of outputs for a Component";
+
 		for (int i = 1; i <= numInputs; i++) {
 			addInput(new Pin(name + " input " + i));
 		}
@@ -22,19 +26,14 @@ public class Component extends Circuit {
 		}
 	}
 
-	public List<Circuit> circuits = new ArrayList<Circuit>();
+	public void addConnection(Connection c) {
+		connections.add(c);
+	}
 
 	public void addCircuit(Circuit circ) {
 		circuits.add(circ);
 	}
 
-	// Important : l'ordre en que s'han afegit les circuits composants del
-	// circuit actual es tal que garanteix una correcte propagacio dels
-	// resultats parcials fins a obtenir el final.
-	// Aquesta es una assumpcio simplificadora que caldria eliminar en el
-	// futur, per tenir una aplicacio mes usable. Potser engegant un algoritme
-	// d'ordenacio topologica de grafs, que reordeni els subcircuits d'un circuit
-	// cada vegada que se'n insereix un ?
 	public void process() {
 		for (Circuit circ : circuits) {
 			circ.process();
@@ -145,6 +144,4 @@ public class Component extends Circuit {
 		}
 		return cloned;
 	}
-
-
 }

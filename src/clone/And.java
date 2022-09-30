@@ -1,14 +1,15 @@
 package clone;
 
 public class And extends Circuit {
-	// Constructor per defecte : dues entrades i una sortida
+	public And() { this("and"); }
+
 	public And(String name) {
 		this(name, 2);
 	}
 
-	// Constructor with >= 1 inputs
 	public And(String name, int numInputs) {
 		super(name);
+		assert numInputs >= 2 : "invalid number of inputs for an And";
 		for (int i = 1; i <= numInputs; i++) {
 			addInput(new Pin(name + " input " + i));
 		}

@@ -2,10 +2,10 @@ package clone;
 import java.util.ArrayList;
 import java.util.List;
 
-// Clase abstracta del composite que te com a grup a Component i com a classes
-// primitives a And, Or, Not
 public abstract class Circuit implements Cloneable {
   protected String name;
+  protected List<Pin> inputs = new ArrayList<Pin>();
+  protected List<Pin> outputs = new ArrayList<Pin>();
 
   public Circuit(String name) {
     this.name = name;
@@ -19,11 +19,7 @@ public abstract class Circuit implements Cloneable {
     return name;
   }
 
-  protected List<Pin> inputs = new ArrayList<Pin>();
-
   protected void addInput(Pin pin) { inputs.add(pin); }
-
-  protected List<Pin> outputs = new ArrayList<Pin>();
 
   protected void addOutput(Pin pin) {
     outputs.add(pin);

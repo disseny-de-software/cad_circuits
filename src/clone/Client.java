@@ -22,7 +22,7 @@ public class Client {
   };
 
   public static void testAnd() {
-    And and = new And("and");
+    And and = new And();
     System.out.println();
     System.out.println("name : " + and.getName());
     boolean[] expectedResultAnd = {false, false, false, true};
@@ -36,7 +36,7 @@ public class Client {
   }
 
   public static void testOr() {
-    Or or = new Or("or");
+    Or or = new Or();
     System.out.println();
     System.out.println("name : " + or.getName());
     boolean[] expectedResultOr = {false, true, true, true};
@@ -50,7 +50,7 @@ public class Client {
   }
 
   public static void testNot() {
-    Not not = new Not("not");
+    Not not = new Not();
     System.out.println();
     System.out.println("name : " + not.getName());
     not.setStateInput(true);
@@ -93,7 +93,7 @@ public class Client {
 
   private static void testXor(Component xor) {
     System.out.println();
-    System.out.println("nom : " + xor.getName());
+    System.out.println("name : " + xor.getName());
     boolean[] expectedResult = {false, true, true, false};
     for (int i = 0; i < 4; i++) {
       xor.setInput(0, table[i][0]);
@@ -109,20 +109,18 @@ public class Client {
   private static Component makeOneBitAdder() {
     Component oneBitAdder = new Component("OneBitAdder", 3, 2);
     // three inputs (bit1, bit2, previous carry) and two outputs (sum and new carry)
-    // sum = (bit1 xor bit2) xor carry entrada
-    // new carry = (bit1 and bit2) or (bit1 and carry) or (bit2 and carry)
+    // sum = (bit1 xor1 bit2) xor2 carry in
+    // new carry = (output of xor1 and carry) or (bit1 and bit2)
     Circuit xor1 = makeXor();
     Circuit xor2 = xor1.clone();
     And and1 = new And("and1");
     And and2 = and1.clone();
-    And and3 = and1.clone();
     Or or = new Or("or", 3);
     // this order matters for the simulation
     oneBitAdder.addCircuit(xor1);
+    oneBitAdder.addCircuit(xor2);
     oneBitAdder.addCircuit(and1);
     oneBitAdder.addCircuit(and2);
-    oneBitAdder.addCircuit(and3);
-    oneBitAdder.addCircuit(xor2);
     oneBitAdder.addCircuit(or);
     // connections "left to right"
     Pin bit1 = oneBitAdder.getPinInput(0);
@@ -140,9 +138,6 @@ public class Client {
     Pin input1And2 = and2.getPinInput(0);
     Pin input2And2 = and2.getPinInput(1);
     Pin outputAnd2 = and2.getPinOutput(0);
-    Pin input1And3 = and3.getPinInput(0);
-    Pin input2And3 = and3.getPinInput(1);
-    Pin outputAnd3 = and3.getPinOutput(0);
     Pin input1Or = or.getPinInput(0);
     Pin input2Or = or.getPinInput(1);
     Pin input3Or = or.getPinInput(2);
@@ -153,25 +148,21 @@ public class Client {
     oneBitAdder.addConnection(new Connection(bit2, input2Xor1));
     oneBitAdder.addConnection(new Connection(outputXor1, input1Xor2));
     oneBitAdder.addConnection(new Connection(carryIn, input2Xor2));
-    oneBitAdder.addConnection(new Connection(bit1, input1And1));
-    oneBitAdder.addConnection(new Connection(bit2, input2And1));
+    oneBitAdder.addConnection(new Connection(outputXor1, input1And1));
+    oneBitAdder.addConnection(new Connection(carryIn, input2And1));
     oneBitAdder.addConnection(new Connection(bit1, input1And2));
-    oneBitAdder.addConnection(new Connection(carryIn, input2And2));
-    oneBitAdder.addConnection(new Connection(bit2, input1And3));
-    oneBitAdder.addConnection(new Connection(carryIn, input2And3));
+    oneBitAdder.addConnection(new Connection(bit2, input2And2));
     oneBitAdder.addConnection(new Connection(outputAnd1, input1Or));
     oneBitAdder.addConnection(new Connection(outputAnd2, input2Or));
-    oneBitAdder.addConnection(new Connection(outputAnd3, input3Or));
     oneBitAdder.addConnection(new Connection(outputXor2, sum));
     oneBitAdder.addConnection(new Connection(outputOr, carryOut));
-
     return oneBitAdder;
   }
 
   private static void testOneBitAdder() {
     Component oneBitAdder = makeOneBitAdder();
     System.out.println();
-    System.out.println("nom : " + oneBitAdder.getName());
+    System.out.println("name : " + oneBitAdder.getName());
     boolean[] expectedResultSum = {false, true, true, false, true, false, false, true};
     boolean[] expectedResultCarryOut = {false, false, false, true, false, true, true, true};
     for (int i = 0; i < 8; i++) {
@@ -230,7 +221,7 @@ public class Client {
   public static void testFourBitsAdder() {
     Component fourBitsAdder = makeFourBitsAdder();
     System.out.println();
-    System.out.println("nom : " + fourBitsAdder.getName());
+    System.out.println("name : " + fourBitsAdder.getName());
     for (int i=0 ; i<16 ; i++) {
       boolean[] num1 = int2Binary(i, 4);
       for (int j=0 ; j<16 ; j++) {

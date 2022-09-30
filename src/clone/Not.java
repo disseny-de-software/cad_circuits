@@ -1,14 +1,14 @@
 package clone;
 
 public class Not extends Circuit {
-	// Constructor per defecte i unic : una entrada i una sortida
+	public Not() { this("not"); }
+
 	public Not(String name) {
 		super(name);
 		addInput(new Pin("not input"));
 		addOutput(new Pin("not output"));
 	}
 
-	// Per fer mes llegible la funcio process(), donat que nomes hi ha una entrada sempre.
 	protected boolean isStateInput() {
 		return this.getPinInput(0).isState();
 	}

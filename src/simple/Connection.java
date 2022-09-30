@@ -1,7 +1,7 @@
 package simple;
 
 public class Connection {
-	public Connection(Pin pinOrigin, Pin pinDestination) {
-		pinOrigin.addObserver(pinDestination);
+	public Connection(Pin pinFrom, Pin pinTo) {
+		pinFrom.addObserver(pinTo);
 	}
 }
